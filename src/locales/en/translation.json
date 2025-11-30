@@ -1,0 +1,33 @@
+{
+  "app": {
+    "name": "Impact Prodige",
+    "tagline": "Youth Management Platform"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "users": "Members",
+    "ministries": "Ministries",
+    "famillesImpact": "Impact Families",
+    "events": "Events",
+    "weeklyVerses": "Weekly Verses"
+  },
+  "common": {
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search",
+    "actions": "Actions",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success"
+  }
+}

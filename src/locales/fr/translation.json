@@ -1,0 +1,33 @@
+{
+  "app": {
+    "name": "Impact Prodige",
+    "tagline": "Plateforme de gestion des jeunes"
+  },
+  "nav": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "profile": "Profil",
+    "login": "Connexion",
+    "logout": "Déconnexion"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "users": "Membres",
+    "ministries": "Ministères",
+    "famillesImpact": "Familles d'Impact",
+    "events": "Événements",
+    "weeklyVerses": "Versets hebdomadaires"
+  },
+  "common": {
+    "create": "Créer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "search": "Rechercher",
+    "actions": "Actions",
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Succès"
+  }
+}
