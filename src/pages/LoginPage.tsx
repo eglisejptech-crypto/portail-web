@@ -25,7 +25,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-28 pt-48">
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
         <div className="text-center mb-8">
           <LogIn className="h-12 w-12 text-blue-600 mx-auto mb-4" />

@@ -1,72 +1,147 @@
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthProvider';
-import { useTranslation } from 'react-i18next';
-import { Users, LogOut, Home, LayoutDashboard } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import '../styles/header.scss';
+
+// Import des images
+import logo from '../assets/images/ejp-logo-beige.png';
+import instaLogo from '../assets/images/insta-logo.png';
+import youtubeLogo from '../assets/images/ytb.png';
+import tiktokLogo from '../assets/images/tiktok.png';
 
 const Header = () => {
-  const { isAuthenticated, logout, user } = useAuth();
-  const { t, i18n } = useTranslation();
+  const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'en' ? 'fr' : 'en';
-    i18n.changeLanguage(newLang);
-    localStorage.setItem('language', newLang);
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 50;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fermer le menu quand on clique en dehors
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isMenuOpen &&
+        menuRef.current &&
+        hamburgerRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        !hamburgerRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   return (
-    <header className="bg-white shadow-md">
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
-          <Users className="h-8 w-8 text-blue-600" />
-          <span className="text-xl font-bold text-gray-800">{t('app.name')}</span>
-        </Link>
+    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
+      <div className="header-top">
+        <img
+          src={logo}
+          alt="Logo Église des jeunes prodiges"
+          className="logo-ejp"
+        />
 
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={toggleLanguage}
-            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-medium"
+        {/* Bouton hamburger pour mobile */}
+        <button 
+          ref={hamburgerRef}
+          className="hamburger-btn"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
+        >
+          {isMenuOpen ? (
+            <X size={28} className="text-white" />
+          ) : (
+            <Menu size={28} className="text-white" />
+          )}
+        </button>
+      </div>
+
+      {/* Menu desktop et mobile */}
+      <div 
+        ref={menuRef}
+        className={`menu-container ${isMenuOpen ? 'menu-open' : ''}`}
+      >
+        <nav className="menu">
+          <Link to="/" onClick={closeMenu}>Accueil</Link>
+          <a 
+            href="https://eglisedesjeunesprodiges.com/qui-sommes-nous/" 
+            onClick={closeMenu}
           >
-            {i18n.language === 'en' ? 'FR' : 'EN'}
-          </button>
+            À propos
+          </a>
+          <Link to="/login" onClick={closeMenu}>Se connecter</Link>
+        </nav>
 
-          <Link to="/" className="flex items-center space-x-1 hover:text-blue-600">
-            <Home className="h-5 w-5" />
-            <span>{t('nav.home')}</span>
-          </Link>
+        <nav className="contact">
+          <a
+            href="https://www.instagram.com/eglisedesjeunesprodiges"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:opacity-100 transition-opacity"
+            aria-label="Instagram"
+            onClick={closeMenu}
+          >
+            <img src={instaLogo} alt="Instagram" />
+          </a>
 
-          {isAuthenticated && (
-            <>
-              <Link to="/dashboard" className="flex items-center space-x-1 hover:text-blue-600">
-                <LayoutDashboard className="h-5 w-5" />
-                <span>{t('nav.dashboard')}</span>
-              </Link>
+          <a
+            href="https://www.youtube.com/@EgliseJeunesProdiges"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:opacity-100 transition-opacity"
+            aria-label="YouTube"
+            onClick={closeMenu}
+          >
+            <img src={youtubeLogo} alt="YouTube" />
+          </a>
 
-              {user && (
-                <span className="text-sm text-gray-600">
-                  {user.firstName} {user.lastName}
-                </span>
-              )}
-
-              <button
-                onClick={logout}
-                className="flex items-center space-x-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-              >
-                <LogOut className="h-5 w-5" />
-                <span>{t('nav.logout')}</span>
-              </button>
-            </>
-          )}
-
-          {!isAuthenticated && (
-            <Link
-              to="/login"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              {t('nav.login')}
-            </Link>
-          )}
-        </div>
-      </nav>
+          <a
+            href="https://www.tiktok.com/@eglisedesjeunesprodiges"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:opacity-100 transition-opacity"
+            aria-label="TikTok"
+            onClick={closeMenu}
+          >
+            <img src={tiktokLogo} alt="TikTok" />
+          </a>
+          
+          <a
+            href="https://eglisedesjeunesprodiges.com/dons/"
+            className="ml-4 px-6 py-2 bg-[#D4AF37] text-black rounded-full font-semibold hover:bg-[#B8941F] transition-all duration-300"
+            target="_blank"
+            rel="noreferrer"
+            onClick={closeMenu}
+          >
+            Dons
+          </a>
+        </nav>
+      </div>
     </header>
   );
 };

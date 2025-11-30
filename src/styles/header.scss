@@ -1,0 +1,192 @@
+@use '_variables' as *;
+
+.header {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  align-items: center;
+  padding: 0.75rem $spacing-lg;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  transition: all 0.4s ease;
+  font-family: $font-family;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  min-height: 70px;
+
+  &.scrolled {
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 0.5rem $spacing-lg;
+  }
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+}
+
+.logo-ejp {
+  height: 50px;
+  width: auto;
+  transition: transform 0.3s;
+  // Rendre le logo blanc visible sur fond sombre
+  filter: brightness(0) invert(1);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    outline: 2px solid rgba(212, 175, 55, 0.5);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+.menu-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $spacing-lg;
+  flex: 1;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  flex: 1;
+  justify-content: center;
+
+  a {
+    font-size: 0.95rem;
+    font-family: $font-family;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 500;
+
+    &:visited {
+      color: white;
+    }
+
+    &:hover {
+      color: $gold;
+      text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+    }
+  }
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+
+  img {
+    height: 28px;
+    width: auto;
+    cursor: pointer;
+    transition: all 0.3s;
+    // Rendre les icônes blanches pour être visibles sur fond sombre
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.15);
+      filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(255, 255, 255, 0.3));
+    }
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-mobile) {
+  .header {
+    flex-direction: column;
+    padding: $spacing-sm;
+    min-height: auto;
+    align-items: stretch;
+  }
+
+  .header-top {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hamburger-btn {
+    display: block;
+  }
+
+  .menu-container {
+    display: none;
+    flex-direction: column;
+    gap: $spacing-md;
+    padding-top: $spacing-md;
+    width: 100%;
+    flex: none;
+
+    &.menu-open {
+      display: flex;
+      animation: slideDown 0.3s ease-out;
+    }
+  }
+
+  .menu {
+    flex-direction: column;
+    width: 100%;
+    gap: $spacing-sm;
+    align-items: flex-start;
+    flex: none;
+
+    a {
+      width: 100%;
+      padding: 0.75rem 0;
+      font-size: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .contact {
+    width: 100%;
+    justify-content: center;
+    padding-top: $spacing-sm;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .logo-ejp {
+    height: 45px;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -17,7 +17,7 @@ export const DashboardPage = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 pt-32 pb-8">
       <div className="flex gap-6">
         <aside className="w-64 bg-white rounded-lg shadow-md p-6 h-fit">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">{t('dashboard.title')}</h2>

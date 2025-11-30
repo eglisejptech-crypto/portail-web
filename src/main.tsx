@@ -4,14 +4,12 @@ import { HashRouter } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthProvider';
 import App from './App';
 import './index.css';
+import './styles/style-ejp.scss';
 import './i18n';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <HashRouter future={{
-      v7_startTransition: true,
-      v7_relativeSplatPath: true,
-    }}>
+    <HashRouter>
       <AuthProvider>
         <App />
       </AuthProvider>
