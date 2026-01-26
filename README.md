@@ -1,1 +1,1 @@
-ejp-croissy-poc
+EJP Croissy
