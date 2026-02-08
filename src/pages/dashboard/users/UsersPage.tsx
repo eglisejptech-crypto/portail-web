@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { memberService } from '../../../services/member.service';
@@ -8,6 +8,7 @@ import { Member } from '../../../types';
 
 const UsersPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [members, setMembers] = useState<Member[]>([]);
   const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -118,7 +119,11 @@ const UsersPage = () => {
               </tr>
             ) : (
               filteredMembers.map((member) => (
-                <tr key={member.id} className="hover:bg-gray-50">
+                <tr
+                  key={member.id}
+                  onClick={() => navigate(`/dashboard/users/${member.id}`)}
+                  className="hover:bg-gray-100 cursor-pointer"
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="font-medium text-gray-900">
                       {member.firstName} {member.lastName}
@@ -130,7 +135,7 @@ const UsersPage = () => {
                       {member.roles && member.roles.length > 0 ? member.roles.join(', ') : '-'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                     <Link
                       to={`/dashboard/users/${member.id}`}
                       className="text-blue-600 hover:text-blue-800 font-medium"

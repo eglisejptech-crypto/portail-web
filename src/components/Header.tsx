@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useAuth } from '../contexts/AuthProvider';
 import '../styles/header.scss';
 
 // Import des images
@@ -9,7 +10,13 @@ import instaLogo from '../assets/images/insta-logo.png';
 import youtubeLogo from '../assets/images/ytb.png';
 import tiktokLogo from '../assets/images/tiktok.png';
 
+const DASHBOARD_ROLES = ['PASTORAL', 'COORDINATOR', 'PILOT'];
+
 const Header = () => {
+  const { user, isAuthenticated, logout } = useAuth();
+  const canAccessDashboard =
+    isAuthenticated &&
+    Boolean(user?.roles?.some((r) => DASHBOARD_ROLES.includes(r)));
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -94,7 +101,23 @@ const Header = () => {
           >
             À propos
           </a>
-          <Link to="/login" onClick={closeMenu}>Se connecter</Link>
+          {canAccessDashboard && (
+            <Link to="/dashboard" onClick={closeMenu}>Dashboard</Link>
+          )}
+          {isAuthenticated ? (
+            <button
+              type="button"
+              className="menu-link"
+              onClick={() => {
+                logout();
+                closeMenu();
+              }}
+            >
+              Déconnexion
+            </button>
+          ) : (
+            <Link to="/login" onClick={closeMenu}>Se connecter</Link>
+          )}
         </nav>
 
         <nav className="contact">

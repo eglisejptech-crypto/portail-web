@@ -80,7 +80,13 @@
   flex: 1;
   justify-content: center;
 
-  a {
+  a,
+  button.menu-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
     font-size: 0.95rem;
     font-family: $font-family;
     color: white;
@@ -88,14 +94,14 @@
     transition: all 0.3s;
     font-weight: 500;
 
-    &:visited {
-      color: white;
-    }
-
     &:hover {
       color: $gold;
       text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
     }
+  }
+
+  a:visited {
+    color: white;
   }
 }
 

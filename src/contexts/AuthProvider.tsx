@@ -28,8 +28,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const token = authService.getToken();
-    if (storedUser && token) {
+    if (storedUser && token && !authService.isTokenExpired()) {
       setUser(JSON.parse(storedUser));
+    } else if (token && authService.isTokenExpired()) {
+      authService.logout();
+      setUser(null);
     }
     setIsLoading(false);
   }, []);
@@ -43,10 +46,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
 
       if (response.data.success) {
-        const { token, refreshToken, userId, firstName, lastName, roles, ministryIds, coordinatorMinistryIds } = response.data.data;
+        const { token, refreshToken, exp, userId, firstName, lastName, roles, ministryIds, coordinatorMinistryIds } = response.data.data;
 
         authService.setToken(token);
         authService.setRefreshToken(refreshToken);
+        authService.setTokenExp(exp);
 
         const user: User = {
           id: userId,
