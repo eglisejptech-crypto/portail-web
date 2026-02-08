@@ -37,5 +37,17 @@ export const ministryService = {
 
   async delete(id: number): Promise<void> {
     await apiClient.delete(`/ministries/${id}`);
-  }
+  },
+
+  async assignMemberToMinistry(ministryId: number, memberId: number): Promise<void> {
+    await apiClient.post(`/ministries/${ministryId}/members/${memberId}`);
+  },
+
+  async promoteToCoordinator(ministryId: number, memberId: number): Promise<void> {
+    await apiClient.post(`/ministries/${ministryId}/coordinators/${memberId}`);
+  },
+
+  async demoteCoordinator(ministryId: number, memberId: number): Promise<void> {
+    await apiClient.delete(`/ministries/${ministryId}/coordinators/${memberId}`);
+  },
 };

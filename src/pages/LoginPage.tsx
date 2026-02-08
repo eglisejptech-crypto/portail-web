@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthProvider';
 import { useTranslation } from 'react-i18next';
 import { LogIn } from 'lucide-react';
+import { useScrollToError } from '../hooks/useScrollToError';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  useScrollToError(error);
   const { login } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();

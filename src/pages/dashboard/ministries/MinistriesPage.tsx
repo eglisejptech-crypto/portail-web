@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Plus, Search, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ministryService } from '../../../services/ministry.service';
+import { useScrollToError } from '../../../hooks/useScrollToError';
 import { Ministry } from '../../../types';
 
 const MinistriesPage = () => {
@@ -12,6 +13,7 @@ const MinistriesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  useScrollToError(error);
 
   useEffect(() => {
     loadMinistries();
@@ -60,8 +62,8 @@ const MinistriesPage = () => {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
+    <div className="min-w-0">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <h1 className="text-3xl font-bold text-gray-800">{t('dashboard.ministries')}</h1>
         <Link
           to="/dashboard/ministries/create"
@@ -90,7 +92,7 @@ const MinistriesPage = () => {
           <p className="text-gray-500">No ministries found</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredMinistries.map((ministry) => (
             <Link
               key={ministry.id}

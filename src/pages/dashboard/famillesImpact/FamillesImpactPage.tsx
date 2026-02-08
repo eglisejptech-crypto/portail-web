@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Plus, Search, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { impactFamilyService } from '../../../services/impactFamily.service';
+import { useScrollToError } from '../../../hooks/useScrollToError';
 import { FamilleImpact } from '../../../types';
 
 const FamillesImpactPage = () => {
@@ -12,6 +13,7 @@ const FamillesImpactPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  useScrollToError(error);
 
   const loadFamilles = useCallback(async () => {
     try {
@@ -64,8 +66,8 @@ const FamillesImpactPage = () => {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
+    <div className="min-w-0">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <h1 className="text-3xl font-bold text-gray-800">{t('dashboard.famillesImpact')}</h1>
         <Link
           to="/dashboard/familles-impact/create"

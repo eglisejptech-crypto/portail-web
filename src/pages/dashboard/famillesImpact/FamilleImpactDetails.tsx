@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Edit, Users, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { impactFamilyService } from '../../../services/impactFamily.service';
+import { useScrollToError } from '../../../hooks/useScrollToError';
 import { FamilleImpact, Member } from '../../../types';
 
 const FamilleImpactDetails = () => {
@@ -12,6 +13,7 @@ const FamilleImpactDetails = () => {
   const [pilots, setPilots] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  useScrollToError(error);
 
   const loadDetails = useCallback(async () => {
     if (!id) return;
@@ -91,8 +93,8 @@ const FamilleImpactDetails = () => {
         <div className="w-full h-40 bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
           <Users className="h-20 w-20 text-white opacity-50" />
         </div>
-        <div className="p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">{family.name}</h1>
+        <div className="p-4 sm:p-6 md:p-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 break-words">{family.name}</h1>
           {family.description && (
             <p className="text-gray-600 mb-6">{family.description}</p>
           )}

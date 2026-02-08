@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Plus, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { memberService } from '../../../services/member.service';
+import { useScrollToError } from '../../../hooks/useScrollToError';
 import { Member } from '../../../types';
 
 const UsersPage = () => {
@@ -12,6 +13,7 @@ const UsersPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  useScrollToError(error);
 
   const loadMembers = useCallback(async () => {
     try {
@@ -64,8 +66,8 @@ const UsersPage = () => {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
+    <div className="min-w-0">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <h1 className="text-3xl font-bold text-gray-800">{t('dashboard.users')}</h1>
         <Link
           to="/dashboard/users/create"
@@ -89,7 +91,7 @@ const UsersPage = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-lg shadow overflow-hidden overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>

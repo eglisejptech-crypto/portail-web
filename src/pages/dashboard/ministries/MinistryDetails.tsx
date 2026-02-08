@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Edit, Users, Calendar, UserCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ministryService } from '../../../services/ministry.service';
+import { useScrollToError } from '../../../hooks/useScrollToError';
 import { Ministry, Member } from '../../../types';
 
 const MinistryDetails = () => {
@@ -15,6 +16,7 @@ const MinistryDetails = () => {
   const [showCoordinators, setShowCoordinators] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  useScrollToError(error);
 
   const loadMinistry = useCallback(async () => {
     if (!id) return;
@@ -122,11 +124,11 @@ const MinistryDetails = () => {
           </div>
         )}
 
-        <div className="p-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">{ministry.name}</h1>
+        <div className="p-4 sm:p-6 md:p-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4 break-words">{ministry.name}</h1>
           <p className="text-gray-600 text-lg mb-8">{ministry.description}</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 md:mb-8">
             <button
               type="button"
               onClick={handleShowMembers}

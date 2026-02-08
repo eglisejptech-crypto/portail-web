@@ -12,6 +12,7 @@ import TermsPage from './pages/TermsPage';
 import UsersPage from './pages/dashboard/users/UsersPage';
 import { UserDetails } from './pages/dashboard/users/UserDetails';
 import { CreateUser } from './pages/dashboard/users/CreateUser';
+import { EditUser } from './pages/dashboard/users/EditUser';
 import MinistriesPage from './pages/dashboard/ministries/MinistriesPage';
 import MinistryDetails from './pages/dashboard/ministries/MinistryDetails';
 import CreateMinistries from './pages/dashboard/ministries/CreateMinistries';
@@ -51,8 +52,9 @@ function App() {
             </ProtectedRoute>
           }>
             <Route path="users" element={<UsersPage />} />
-            <Route path="users/:id" element={<UserDetails />} />
             <Route path="users/create" element={<CreateUser />} />
+            <Route path="users/:id/edit" element={<EditUser />} />
+            <Route path="users/:id" element={<UserDetails />} />
             <Route path="ministries" element={<MinistriesPage />} />
             <Route path="ministries/create" element={<CreateMinistries />} />
             <Route path="ministries/:id" element={<MinistryDetails />} />
