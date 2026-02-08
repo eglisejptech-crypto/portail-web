@@ -28,6 +28,7 @@
     "actions": "Actions",
     "loading": "Chargement...",
     "error": "Une erreur s'est produite",
+    "errorLoad": "Impossible de charger les données",
     "success": "Succès"
   }
 }

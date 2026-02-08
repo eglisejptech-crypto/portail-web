@@ -1,5 +1,5 @@
 import { apiClient } from './api.client';
-import { ApiResponse, Ministry, PaginatedResponse } from '../types';
+import { ApiResponse, Member, Ministry, PaginatedResponse } from '../types';
 
 export const ministryService = {
   async getAll(page = 0, size = 20): Promise<PaginatedResponse<Ministry>> {
@@ -11,6 +11,17 @@ export const ministryService = {
 
   async getById(id: number): Promise<Ministry> {
     const response = await apiClient.get<ApiResponse<Ministry>>(`/ministries/${id}`);
+    return response.data.data;
+  },
+
+  async getMinistryMembers(
+    ministryId: number,
+    page = 0,
+    size = 100
+  ): Promise<PaginatedResponse<Member>> {
+    const response = await apiClient.get<ApiResponse<PaginatedResponse<Member>>>(
+      `/ministries/${ministryId}/members?page=${page}&size=${size}`
+    );
     return response.data.data;
   },
 

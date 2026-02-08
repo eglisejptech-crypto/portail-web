@@ -31,6 +31,24 @@ export interface User {
   createdAt?: string;
 }
 
+/** Membre (MemberDto backend) - utilisé par l'API members */
+export interface Member {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  country?: string;
+  gender?: string;
+  createdAt: string;
+  updatedAt: string;
+  status?: string;
+  roles: string[];
+  imageUrl?: string | null;
+}
+
 export interface Ministry {
   id: number;
   name: string;
@@ -50,12 +68,17 @@ export interface PaginatedResponse<T> {
   pageSize: number;
 }
 
+/** Famille d'impact (ImpactFamilyDto backend) */
 export interface FamilleImpact {
-  id: string;
+  id: number;
   name: string;
-  leaderId?: string;
-  members: string[];
+  address?: string;
+  description?: string;
+  memberCount: number;
+  userIds?: number[];
+  users?: Member[];
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface Event {

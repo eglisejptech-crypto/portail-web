@@ -1,9 +1,67 @@
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { memberService } from '../../../services/member.service';
+import { Member } from '../../../types';
 
 const UsersPage = () => {
   const { t } = useTranslation();
+  const [members, setMembers] = useState<Member[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const loadMembers = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const response = await memberService.getAll();
+      setMembers(response.data);
+      setFilteredMembers(response.data);
+    } catch (err) {
+      setError(t('common.errorLoad') || 'Impossible de charger les membres');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [t]);
+
+  useEffect(() => {
+    loadMembers();
+  }, [loadMembers]);
+
+  useEffect(() => {
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      const filtered = members.filter(
+        (m) =>
+          `${m.firstName} ${m.lastName}`.toLowerCase().includes(term) ||
+          m.email.toLowerCase().includes(term) ||
+          (m.roles && m.roles.some((r) => r.toLowerCase().includes(term)))
+      );
+      setFilteredMembers(filtered);
+    } else {
+      setFilteredMembers(members);
+    }
+  }, [searchTerm, members]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="text-lg text-gray-600">{t('common.loading')}</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -23,6 +81,8 @@ const UsersPage = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           <input
             type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={t('common.search')}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -34,13 +94,13 @@ const UsersPage = () => {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Name
+                Nom
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Email
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Role
+                Rôle
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 {t('common.actions')}
@@ -48,11 +108,37 @@ const UsersPage = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            <tr>
-              <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
-                No members found
-              </td>
-            </tr>
+            {filteredMembers.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
+                  Aucun membre trouvé
+                </td>
+              </tr>
+            ) : (
+              filteredMembers.map((member) => (
+                <tr key={member.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="font-medium text-gray-900">
+                      {member.firstName} {member.lastName}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-600">{member.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm text-gray-600">
+                      {member.roles && member.roles.length > 0 ? member.roles.join(', ') : '-'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <Link
+                      to={`/dashboard/users/${member.id}`}
+                      className="text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      Voir
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

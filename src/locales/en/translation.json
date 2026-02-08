@@ -28,6 +28,7 @@
     "actions": "Actions",
     "loading": "Loading...",
     "error": "An error occurred",
+    "errorLoad": "Unable to load data",
     "success": "Success"
   }
 }
